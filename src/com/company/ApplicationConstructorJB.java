@@ -1,7 +1,6 @@
 package com.company;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class ApplicationConstructorJB implements Serializable {
 
@@ -12,7 +11,7 @@ public class ApplicationConstructorJB implements Serializable {
     private String race = "";
     private String ethnicity = "";
     private String commute = "";
-    private Date graduationDate = new Date();
+    private String graduationDate = "";
     private int age = 0;
     private String phnumber = "";
     private String parentName = "";
@@ -29,7 +28,7 @@ public class ApplicationConstructorJB implements Serializable {
     }
 
     public ApplicationConstructorJB(String name, String school, String email, String gender, String race,
-                                    String ethnicity, String commute, Date graduationDate, int age, String phnumber,
+                                    String ethnicity, String commute, String graduationDate, int age, String phnumber,
                                     String parentName, String parentEmail, String parentNumber, String plan,
                                     String aptitude, String dedication, String passion, String persistence,
                                     String status) {
@@ -65,7 +64,7 @@ public class ApplicationConstructorJB implements Serializable {
                 ", ethnicity='" + ethnicity + '\'' +
                 ", commute='" + commute + '\'' +
                 ", graduationDate='" + graduationDate + '\'' +
-                ", age=" + age +
+                "', age=" + age +
                 ", phnumber='" + phnumber + '\'' +
                 ", parentName='" + parentName + '\'' +
                 ", parentEmail='" + parentEmail + '\'' +
@@ -135,11 +134,11 @@ public class ApplicationConstructorJB implements Serializable {
         this.commute = commute;
     }
 
-    public Date getGraduationDate() {
+    public String getGraduationDate() {
         return graduationDate;
     }
 
-    public void setGraduationDate(Date graduationDate) {
+    public void setGraduationDate(String graduationDate) {
         this.graduationDate = graduationDate;
     }
 

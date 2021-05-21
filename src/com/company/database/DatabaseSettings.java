@@ -66,7 +66,7 @@ public class DatabaseSettings {
                     data.getString("Race"),
                     data.getString("Ethnicity"),
                     data.getString("Commute"),
-                    data.getDate("GraduationDate"),
+                    data.getString("GraduationDate"),
                     data.getInt("Age"),
                     data.getString("PhoneNumber"),
                     data.getString("ParentName"),

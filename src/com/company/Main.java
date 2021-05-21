@@ -318,7 +318,12 @@ public class Main {
                                 }
                             }
 
-                            Date hsgraduation = new Date(inputMonth, inputDay, inputYear);
+                            String month = Integer.toString(inputMonth);
+                            String day = Integer.toString(inputDay);
+                            String year = Integer.toString(inputYear);
+                            String hsgraduation = month + "/" + day + "/" + year;
+
+                            System.out.println(hsgraduation);
 
                             int age = 0;
                             while (age < 16) {
