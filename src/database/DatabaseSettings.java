@@ -1,6 +1,8 @@
-package com.company.database;
+package database;
 
 import com.company.ApplicationConstructorJB;
+import com.company.TestimonialConstructorJB;
+import com.company.TipConstructorJB;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,13 +12,16 @@ import java.util.Scanner;
 
 public class DatabaseSettings {
     static Scanner stdin = new Scanner(System.in);
-    static String dburl = "jdbc:sqlite:src/com/company/database/database.db";
+    static String dburl = "jdbc:sqlite:src/database/database.db";
     static Connection conn;
 
     public static void connect() throws SQLException{
-        if(conn == null) {
+        try {
             conn = DriverManager.getConnection(dburl);
-            System.out.println("Connected");
+            System.out.println("Connection to SQLite has been established.");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            System.exit(1);
         }
     }
 
@@ -84,5 +89,68 @@ public class DatabaseSettings {
         return retrieved;
     }
 
+
+    public static void addTestimonialtoDB(TestimonialConstructorJB testimonial) throws SQLException {
+        connect();
+        var statement = conn.createStatement();
+        statement.executeUpdate(
+                "INSERT INTO Testimonials (" +
+                        "Name, classOf, Text" +
+                        ")" +
+                        "VALUES ('" + testimonial.getName() +
+                        "', " + testimonial.getClassOf() +
+                        ", '" + testimonial.getText() +
+                        "')"
+        ); // add single string quotes to strings
+
+    }
+
+    public static ArrayList<TestimonialConstructorJB> getTestimonialsfromDB() throws SQLException {
+        connect();
+        var statement = conn.createStatement();
+        var data = statement.executeQuery("SELECT * FROM Testimonials");
+
+        ArrayList<TestimonialConstructorJB> retrieved = new ArrayList<>();
+        while (data.next()) {
+            retrieved.add(new TestimonialConstructorJB(
+                    data.getString("Name"),
+                    data.getInt("classOf"),
+                    data.getString("Text")
+            ));
+        }
+        return retrieved;
+    }
+
+
+    public static void addTiptoDB(TipConstructorJB tip) throws SQLException {
+        connect();
+        var statement = conn.createStatement();
+        statement.executeUpdate(
+                "INSERT INTO Tips (" +
+                        "Title, Body" +
+                        ")" +
+                        "VALUES ('" + tip.getTitle() +
+                        "', '" + tip.getBody() +
+                        "')"
+        ); // add single string quotes to strings
+
+    }
+
+
+
+    public static ArrayList<TipConstructorJB> getTipsfromDB() throws SQLException {
+        connect();
+        var statement = conn.createStatement();
+        var data = statement.executeQuery("SELECT * FROM Tips");
+
+        ArrayList<TipConstructorJB> retrieved = new ArrayList<>();
+        while (data.next()) {
+            retrieved.add(new TipConstructorJB(
+                    data.getString("Title"),
+                    data.getString("Body")
+            ));
+        }
+        return retrieved;
+    }
 
 }

@@ -1,17 +1,15 @@
 package com.company;
 import java.sql.SQLException;
 import java.util.Scanner;
-import com.company.database.*;
-import java.util.Date;
-import java.math.BigInteger;
+import database.*;
 
 
 public class Main {
 
     public static void main(String[] args) throws SQLException {
         // write your code here
-        TestimonialsList testimonials = new TestimonialsList();
-        ApplicationsList applicationsList = new ApplicationsList();
+//        TestimonialsList testimonials = new TestimonialsList();
+//        ApplicationsList applicationsList = new ApplicationsList();
         TipsList tips = new TipsList();
         System.out.println("""
                 Welcome to Base Camp Coding Academy!
@@ -115,11 +113,11 @@ public class Main {
                                     scan.nextLine();
                                     System.out.println("Type your testimonial> ");
                                     String text = scan.nextLine();
-                                    Testimonial testimonial = new Testimonial(name, classOf, text);
-                                    testimonials.addTestimonial(testimonial);
+                                    TestimonialConstructorJB testimonial = new TestimonialConstructorJB(name, classOf, text);
+                                    DatabaseSettings.addTestimonialtoDB(testimonial);
                                     invalidIN = false;
                                 } else if (cOv.equalsIgnoreCase("view")) {
-                                    testimonials.viewAll();
+                                    DatabaseSettings.getTestimonialsfromDB();
                                     invalidIN = false;
                                 } else {
                                     System.out.println("Invalid input, please try again. ");
@@ -141,11 +139,11 @@ public class Main {
                                     String title = scan.nextLine();
                                     System.out.println("Body: ");
                                     String body = scan.nextLine();
-                                    Tip tip = new Tip(title, body);
-                                    tips.addTip(tip);
+                                    TipConstructorJB tip = new TipConstructorJB(title, body);
+                                    DatabaseSettings.addTiptoDB(tip);
                                     invalidTip = false;
                                 } else if (tipChoice.equalsIgnoreCase("view")) {
-                                    tips.viewAll();
+                                    DatabaseSettings.getTipsfromDB();
                                     invalidTip = false;
                                 } else {
                                     System.out.println("Invalid input, please try again.");
@@ -266,15 +264,14 @@ public class Main {
 
 
                             boolean invalidMonth = true;
-                            int inputMonth = 0;
-                            int inputDay = 0;
-                            int inputYear = 0;
+                            String inputMonth = "";
+                            String inputDay = "";
+                            String inputYear = "";
 
                             while (invalidMonth) {
                                 System.out.println("Expected Graduation Date - Enter the month in this format (MM): ");
-                                inputMonth = scan.nextInt();
-                                scan.nextLine();
-                                if (inputMonth >= 1 || inputMonth <= 12) {
+                                inputMonth = scan.nextLine();
+                                if (Integer.parseInt(inputMonth) >= 1 || Integer.parseInt(inputMonth) <= 12) {
                                     invalidMonth = false;
                                 } else {
                                     System.out.println("Invalid input, try again.");
@@ -285,21 +282,20 @@ public class Main {
                             boolean invalidDay = true;
                             while(invalidDay) {
                                 System.out.println("Expected Graduation Date - Enter the day in this format (DD):");
-                                inputDay = scan.nextInt();
-                                scan.nextLine();
+                                inputDay = scan.nextLine();
                                 switch (inputMonth) {
-                                    case 1, 3, 5, 7, 9, 11: {
-                                        if (inputDay >= 1 || inputDay <= 31){
+                                    case "1", "3", "5", "7", "9", "11": {
+                                        if (Integer.parseInt(inputDay) >= 1 || Integer.parseInt(inputDay) <= 31){
                                             invalidDay = false;
                                         }
                                     }
-                                    case 4, 6, 8, 10, 12: {
-                                        if (inputDay >= 1 || inputDay <= 30){
+                                    case "4", "6", "8", "10", "12": {
+                                        if (Integer.parseInt(inputDay) >= 1 || Integer.parseInt(inputDay) <= 30){
                                             invalidDay = false;
                                         }
                                     }
-                                    case 2: {
-                                        if (inputDay >= 1 || inputDay <= 28){
+                                    case "2": {
+                                        if (Integer.parseInt(inputDay) >= 1 || Integer.parseInt(inputDay) <= 28){
                                             invalidDay = false;
                                         }
                                     }
@@ -309,19 +305,14 @@ public class Main {
                             boolean invalidYear = true;
                             while(invalidYear){
                                 System.out.println("Expected Graduation Date - Enter the year in this format (YYYY):");
-                                inputYear = scan.nextInt();
-                                scan.nextLine();
-                                if (inputYear >= 1000 & inputYear <= 3000){
+                                inputYear = scan.nextLine();
+                                if (Integer.parseInt(inputYear) >= 1000 & Integer.parseInt(inputYear) <= 3000){
                                     invalidYear = false;
                                 } else {
                                     System.out.println("Invalid input, try again.");
                                 }
                             }
-
-                            String month = Integer.toString(inputMonth);
-                            String day = Integer.toString(inputDay);
-                            String year = Integer.toString(inputYear);
-                            String hsgraduation = month + "/" + day + "/" + year;
+                            String hsgraduation = inputMonth + "/" + inputDay + "/" + inputYear;
 
                             System.out.println(hsgraduation);
 
@@ -428,21 +419,21 @@ public class Main {
 
 
                         }
-                        case "application status", "status" -> {
-                            boolean invalidsName = true;
-                            String iName = "";
-                            while (invalidsName) {
-                                System.out.println("What is your name?");
-                                iName = scan.nextLine();
-                                if (iName.contains(" ")) {
-                                    invalidsName = false;
-                                } else {
-                                    System.out.println("Please provide your full name.");
-                                }
-                            }
-                            applicationsList.status(iName);
-                            invalid = false;
-                        }
+//                        case "application status", "status" -> {
+//                            boolean invalidsName = true;
+//                            String iName = "";
+//                            while (invalidsName) {
+//                                System.out.println("What is your name?");
+//                                iName = scan.nextLine();
+//                                if (iName.contains(" ")) {
+//                                    invalidsName = false;
+//                                } else {
+//                                    System.out.println("Please provide your full name.");
+//                                }
+//                            }
+//                            applicationsList.status(iName);
+//                            invalid = false;
+//                        }
                         case "q", "quit" -> {
                             System.exit(0);
                             invalid = false;
