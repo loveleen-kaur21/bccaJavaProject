@@ -441,21 +441,21 @@ public class Main {
 
 
                         }
-//                        case "application status", "status" -> {
-//                            boolean invalidsName = true;
-//                            String iName = "";
-//                            while (invalidsName) {
-//                                System.out.println("What is your name?");
-//                                iName = scan.nextLine();
-//                                if (iName.contains(" ")) {
-//                                    invalidsName = false;
-//                                } else {
-//                                    System.out.println("Please provide your full name.");
-//                                }
-//                            }
-//                            applicationsList.status(iName);
-//                            invalid = false;
-//                        }
+                        case "application status", "status" -> {
+                            boolean invalidsName = true;
+                            String iName = "";
+                            while (invalidsName) {
+                                System.out.println("What is your name?");
+                                iName = scan.nextLine();
+                                if (iName.contains(" ")) {
+                                    invalidsName = false;
+                                } else {
+                                    System.out.println("Please provide your full name.");
+                                }
+                            }
+                            System.out.println(DatabaseSettings.getAppStatus(iName));
+                            invalid = false;
+                        }
                         case "q", "quit" -> {
                             System.exit(0);
                             invalid = false;

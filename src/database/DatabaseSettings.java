@@ -169,11 +169,21 @@ public class DatabaseSettings {
         return retrieved;
     }
 
+    public static String getAppStatus(String applicant) throws SQLException{
+        connect();
+        var statement = conn.createStatement();
+        var data = statement.executeQuery("SELECT * FROM CourseworkDetails WHERE NAME = '" + applicant + "'");
+        String status = "";
+        while (data.next()){
+            status = data.getString("Status");
+        }
+        return status;
+    }
+
     public static ArrayList<DescriptionConstructorJB> getDescription(String input) throws SQLException {
         connect();
-        var statement = conn.prepareStatement("SELECT Language, Duration, Description, Objectives FROM CourseworkDetails WHERE Name = ?");
-        statement.setString(1, input);
-        var data = statement.executeQuery();
+        var statement = conn.createStatement();
+        var data = statement.executeQuery("SELECT Language, Duration, Description, Objectives FROM CourseworkDetails WHERE Name = '" + input + "'");
         ArrayList<DescriptionConstructorJB> retrieved = new ArrayList<>();
         while (data.next()){
             retrieved.add(new DescriptionConstructorJB(
