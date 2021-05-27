@@ -1,5 +1,7 @@
 package com.company;
+import java.sql.Array;
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.Scanner;
 import database.*;
 
@@ -7,10 +9,6 @@ import database.*;
 public class Main {
 
     public static void main(String[] args) throws SQLException {
-        // write your code here
-//        TestimonialsList testimonials = new TestimonialsList();
-//        ApplicationsList applicationsList = new ApplicationsList();
-        TipsList tips = new TipsList();
         System.out.println("""
                 Welcome to Base Camp Coding Academy!
                 """);
@@ -41,51 +39,73 @@ public class Main {
                     String choice = scan.nextLine();
                     switch (choice.toLowerCase()) {
                         case "coursework", "coursework details" -> {
-                            Coursework.overall();
+                            String[] arr = new String[DatabaseSettings.getMainCourses().size()];
+
+                            for (int i = 0; i < DatabaseSettings.getMainCourses().size(); i++) {
+                                arr[i] = DatabaseSettings.getMainCourses().get(i);
+                            }
+
+//                            prints formatted
+                            for (int i = 0; i < arr.length; i++){
+                                System.out.println(
+                                        String.format("      - %s", arr[i])
+                                );
+                            }
+
                             boolean invalidI = true;
                             while (invalidI) {
                                 System.out.println("Select a unit to view full description. ");
                                 String unitPick = scan.nextLine();
-                                switch (unitPick.toLowerCase()) {
+                                String check = unitPick.toLowerCase();
+                                switch (check) {
                                     case "fundamentals of programming pt. 1", "fundamentals of programming pt.1", "fundamentals 1",
                                             "programming pt.1", "programming pt. 1", "unit 1" -> {
-                                        Coursework.fundamentalsProgramming1();
+                                        String input = "Unit 1";
+                                        System.out.println(DatabaseSettings.getDescription(input));
                                         invalidI = false;
                                     }
                                     case "fundamentals of programming pt.2", "fundamentals of programming pt. 2",
                                             "programming pt.2", "programming pt. 2", "unit 2" -> {
-                                        Coursework.fundamentalsProgramming2();
+                                        String input = "Unit 2";
+                                        System.out.println(DatabaseSettings.getDescription(input));
                                         invalidI = false;
                                     }
                                     case "static website development", "static web dev", "static web development", "unit 3" -> {
-                                        Coursework.staticWebDev();
+                                        String input = "Unit 3";
+                                        System.out.println(DatabaseSettings.getDescription(input));
                                         invalidI = false;
                                     }
                                     case "dynamic website development 1", "dynamic web development 1", "dynamic website development pt.1",
                                             "dynamic website development pt. 1", "unit 4" -> {
-                                        Coursework.dynamicWebDev1();
+                                        String input = "Unit 4";
+                                        System.out.println(DatabaseSettings.getDescription(input));
                                         invalidI = false;
                                     }
                                     case "dynamic website development 2", "dynamic web development 2", "dynamic website development pt.2",
                                             "dynamic website development pt. 2", "unit 5" -> {
-                                        Coursework.dynamicWebDev2();
+                                        String input = "Unit 5";
+                                        System.out.println(DatabaseSettings.getDescription(input));
                                         invalidI = false;
                                     }
                                     case "dynamic website development 3", "dynamic web development 3", "dynamic website development pt.3",
                                             "dynamic website development pt. 3", "unit 6" -> {
-                                        Coursework.dynamicWebDev3();
+                                        String input = "Unit 6";
+                                        System.out.println(DatabaseSettings.getDescription(input));
                                         invalidI = false;
                                     }
                                     case "fundamentals of java", "java", "unit 7" -> {
-                                        Coursework.java();
+                                        String input = "Unit 7";
+                                        System.out.println(DatabaseSettings.getDescription(input));
                                         invalidI = false;
                                     }
                                     case "spring web application development", "spring", "spring web app dev", "unit 8" -> {
-                                        Coursework.spring();
+                                        String input = "Unit 8";
+                                        System.out.println(DatabaseSettings.getDescription(input));
                                         invalidI = false;
                                     }
                                     case "capstone", "capstone project", "unit 9" -> {
-                                        Coursework.capstone();
+                                        String input = "Unit 9";
+                                        System.out.println(DatabaseSettings.getDescription(input));
                                         invalidI = false;
                                     }
                                     case "exit" -> {
@@ -143,7 +163,7 @@ public class Main {
                                     DatabaseSettings.addTiptoDB(tip);
                                     invalidTip = false;
                                 } else if (tipChoice.equalsIgnoreCase("view")) {
-                                    DatabaseSettings.getTipsfromDB();
+                                    System.out.println(DatabaseSettings.getTipsfromDB());
                                     invalidTip = false;
                                 } else {
                                     System.out.println("Invalid input, please try again.");
@@ -284,21 +304,24 @@ public class Main {
                                 System.out.println("Expected Graduation Date - Enter the day in this format (DD):");
                                 inputDay = scan.nextLine();
                                 switch (inputMonth) {
-                                    case "1", "3", "5", "7", "9", "11": {
+                                    case "01", "03", "05", "07", "09", "11": {
                                         if (Integer.parseInt(inputDay) >= 1 || Integer.parseInt(inputDay) <= 31){
                                             invalidDay = false;
                                         }
                                     }
-                                    case "4", "6", "8", "10", "12": {
+                                    case "04", "06", "08", "10", "12": {
                                         if (Integer.parseInt(inputDay) >= 1 || Integer.parseInt(inputDay) <= 30){
                                             invalidDay = false;
                                         }
                                     }
-                                    case "2": {
+                                    case "02": {
                                         if (Integer.parseInt(inputDay) >= 1 || Integer.parseInt(inputDay) <= 28){
                                             invalidDay = false;
                                         }
                                     }
+
+                                    default:
+                                        System.out.println("Invalid try again.");
                                 }
                             }
 
@@ -312,9 +335,8 @@ public class Main {
                                     System.out.println("Invalid input, try again.");
                                 }
                             }
-                            String hsgraduation = inputMonth + "/" + inputDay + "/" + inputYear;
+                            String GraduationDate = inputMonth + "/" + inputDay + "/" + inputYear;
 
-                            System.out.println(hsgraduation);
 
                             int age = 0;
                             while (age < 16) {
@@ -412,7 +434,7 @@ public class Main {
 
                             ApplicationConstructorJB application = new ApplicationConstructorJB(
                                     name, school, email, gender, race,
-                                    ethnicity, commute, hsgraduation, age, phnumber, parentName, parentEmail, parentNumber, plan,
+                                    ethnicity, commute, GraduationDate, age, phnumber, parentName, parentEmail, parentNumber, plan,
                                     aptitude, dedication, passion, persistence, status
                             );
                             DatabaseSettings.addApplicationtoDB(application);

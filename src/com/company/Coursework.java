@@ -152,7 +152,7 @@ public class Coursework {
 
     public static void dynamicWebDev3 () {
         System.out.println("""
-                --- Dynamic Website Development Part 3: Django ---
+                --- Dynamic Website Development Part 3: JavaScript ---
 
                 Duration: 5 weeks
                                 
@@ -176,7 +176,7 @@ public class Coursework {
 
     public static void java() {
         System.out.println("""
-                --- Fundamentals of Java: Django ---
+                --- Fundamentals of Java: Java ---
                                 
                 Duration: 5 weeks
                                 

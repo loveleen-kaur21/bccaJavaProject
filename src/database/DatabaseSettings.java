@@ -1,6 +1,7 @@
 package database;
 
 import com.company.ApplicationConstructorJB;
+import com.company.DescriptionConstructorJB;
 import com.company.TestimonialConstructorJB;
 import com.company.TipConstructorJB;
 
@@ -17,8 +18,10 @@ public class DatabaseSettings {
 
     public static void connect() throws SQLException{
         try {
-            conn = DriverManager.getConnection(dburl);
-            System.out.println("Connection to SQLite has been established.");
+            if (conn == null){
+                conn = DriverManager.getConnection(dburl);
+                System.out.println("Connection to SQLite has been established.");
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             System.exit(1);
@@ -39,8 +42,8 @@ public class DatabaseSettings {
                         "', '" + application.getRace() +
                         "', '" + application.getEthnicity() +
                         "', '" + application.getCommute() +
-                        "', " + application.getGraduationDate() +
-                        ", " + application.getAge() +
+                        "', '" + application.getGraduationDate() +
+                        "', " + application.getAge() +
                         ", '" + application.getPhnumber() +
                         "', '" + application.getParentName() +
                         "', '" + application.getParentEmail() +
@@ -149,6 +152,38 @@ public class DatabaseSettings {
                     data.getString("Title"),
                     data.getString("Body")
             ));
+        }
+        return retrieved;
+    }
+
+    public static ArrayList<String> getMainCourses() throws SQLException {
+        connect();
+        var statement = conn.createStatement();
+        var data = statement.executeQuery("SELECT Title FROM CourseworkDetails");
+        ArrayList<String> retrieved = new ArrayList<>();
+        while (data.next()){
+            retrieved.add(
+                    data.getString("Title")
+            );
+        }
+        return retrieved;
+    }
+
+    public static ArrayList<DescriptionConstructorJB> getDescription(String input) throws SQLException {
+        connect();
+        var statement = conn.prepareStatement("SELECT Language, Duration, Description, Objectives FROM CourseworkDetails WHERE Name = ?");
+        statement.setString(1, input);
+        var data = statement.executeQuery();
+        ArrayList<DescriptionConstructorJB> retrieved = new ArrayList<>();
+        while (data.next()){
+            retrieved.add(new DescriptionConstructorJB(
+                    data.getString("Language"),
+                    data.getString("Duration"),
+                    data.getString("Description"),
+                    data.getString("Objectives")
+                    )
+
+            );
         }
         return retrieved;
     }
