@@ -9,23 +9,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class DatabaseSettings {
-    static Scanner stdin = new Scanner(System.in);
     static String dburl = "jdbc:sqlite:src/database/database.db";
     static Connection conn;
 
     public static void connect() throws SQLException{
-        try {
             if (conn == null){
                 conn = DriverManager.getConnection(dburl);
-                System.out.println("Connection to SQLite has been established.");
             }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            System.exit(1);
-        }
     }
 
     public static void addApplicationtoDB(ApplicationConstructorJB application) throws SQLException {
@@ -59,11 +51,47 @@ public class DatabaseSettings {
 
     }
 
-    public static ArrayList<ApplicationConstructorJB> getApplicationsFromDatabase() throws SQLException {
+    public static ArrayList<String> getApplicantsFromDB() throws SQLException {
         connect();
         var statement = conn.createStatement();
-        var data = statement.executeQuery("SELECT * FROM Applications");
+        var data = statement.executeQuery("SELECT Name FROM Applications");
+        ArrayList<String> retrieved = new ArrayList<>();
+        while (data.next()) {
+            retrieved.add(data.getString("Name"));
+        }
+        return retrieved;
+    }
 
+    public static String viewStatus(String inName) throws SQLException {
+        connect();
+        var statement = conn.createStatement();
+        var data = statement.executeQuery("SELECT Status FROM Applications WHERE Name = '" + inName + "'");
+        String status;
+        status = data.getString("Status");
+        return status;
+    }
+    public static void updateApplicantStatus(String iname, String istatus) throws SQLException {
+        connect();
+        var statement = conn.createStatement();
+        var data = statement.executeQuery("SELECT Name FROM Applications");
+        ArrayList<String> retrieved = new ArrayList<>();
+        while (data.next()) {
+            retrieved.add(data.getString("Name"));
+        }
+        if (retrieved.contains(iname)){
+            var secstatement = conn.prepareStatement("UPDATE Applications SET Status = ? WHERE Name = ?");
+            secstatement.setString(1, istatus);
+            secstatement.setString(2, iname);
+            secstatement.executeUpdate();
+        }
+    }
+
+
+    public static ArrayList<ApplicationConstructorJB> getApplicationFromDatabase(String input) throws SQLException {
+        connect();
+        var statement = conn.prepareStatement("SELECT * FROM Applications WHERE Name = ?");
+        statement.setString(1, input);
+        var data = statement.executeQuery();
         ArrayList<ApplicationConstructorJB> retrieved = new ArrayList<>();
         while (data.next()) {
             retrieved.add(new ApplicationConstructorJB(
@@ -86,7 +114,6 @@ public class DatabaseSettings {
                     data.getString("Passion").replace("''", "'"),
                     data.getString("Persistence").replace("''", "'"),
                     data.getString("Status").replace("''", "'")
-
             ));
         }
         return retrieved;
@@ -95,16 +122,11 @@ public class DatabaseSettings {
 
     public static void addTestimonialtoDB(TestimonialConstructorJB testimonial) throws SQLException {
         connect();
-        var statement = conn.createStatement();
-        statement.executeUpdate(
-                "INSERT INTO Testimonials (" +
-                        "Name, classOf, Text" +
-                        ")" +
-                        "VALUES ('" + testimonial.getName() +
-                        "', " + testimonial.getClassOf() +
-                        ", '" + testimonial.getText() +
-                        "')"
-        ); // add single string quotes to strings
+        var statement = conn.prepareStatement("INSERT INTO Testimonials (Name, classOf, Text) VALUES (?, ?, ?)");
+        statement.setString(1, testimonial.getName());
+        statement.setString(2, testimonial.getClassOf());
+        statement.setString(3, testimonial.getText());
+        statement.executeUpdate();
 
     }
 
@@ -117,26 +139,53 @@ public class DatabaseSettings {
         while (data.next()) {
             retrieved.add(new TestimonialConstructorJB(
                     data.getString("Name"),
-                    data.getInt("classOf"),
+                    data.getString("classOf"),
                     data.getString("Text")
             ));
         }
+
         return retrieved;
+    }
+
+    public static boolean existingTestimonials() throws SQLException {
+        connect();
+        boolean exists = false;
+        var statement = conn.createStatement();
+        var data = statement.executeQuery("SELECT * FROM Testimonials");
+        ArrayList<String> info = new ArrayList<>();
+        while (data.next()) {
+            info.add(data.getString("Name"));
+        }
+        if (info.size() > 0){
+            exists = true;
+        }
+        return exists;
+    }
+
+
+    public static boolean checkForApplicantExistence(String input) throws SQLException {
+        boolean existence = false;
+        connect();
+        var statement = conn.createStatement();
+        var data = statement.executeQuery("SELECT Name FROM Applications");
+        ArrayList<String> names = new ArrayList<>();
+        while (data.next()) {
+            names.add(data.getString("Name").toLowerCase());
+        }
+        if (names.contains(input)) {
+            existence = true;
+        }
+        return existence;
     }
 
 
     public static void addTiptoDB(TipConstructorJB tip) throws SQLException {
         connect();
-        var statement = conn.createStatement();
-        statement.executeUpdate(
-                "INSERT INTO Tips (" +
-                        "Title, Body" +
-                        ")" +
-                        "VALUES ('" + tip.getTitle() +
-                        "', '" + tip.getBody() +
-                        "')"
-        ); // add single string quotes to strings
-
+        var statement = conn.prepareStatement("INSERT INTO TIPS (Title, Body) VALUES (?, ?)");
+        statement.setString(1, tip.getTitle());
+        statement.setString(2, tip.getBody());
+        statement.executeUpdate();
+  // add single string quotes to strings
     }
 
 
@@ -156,6 +205,20 @@ public class DatabaseSettings {
         return retrieved;
     }
 
+    public static boolean existenceOfTips() throws SQLException {
+        connect();
+        var statement = conn.createStatement();
+        var data = statement.executeQuery("SELECT Title FROM Tips");
+        boolean exists = false;
+        ArrayList<String> info = new ArrayList<>();
+        while (data.next()) {
+            info.add(data.getString("Title"));
+        }
+        if (info.size() > 0){
+            exists = true;
+        }
+        return exists;
+    }
     public static ArrayList<String> getMainCourses() throws SQLException {
         connect();
         var statement = conn.createStatement();
@@ -187,5 +250,7 @@ public class DatabaseSettings {
         }
         return retrieved;
     }
+
+
 
 }

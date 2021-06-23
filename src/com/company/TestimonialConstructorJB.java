@@ -4,13 +4,13 @@ import java.io.Serializable;
 
 public class TestimonialConstructorJB implements Serializable{
     private String name = "";
-    private int classOf = 0;
+    private String classOf = "";
     private String text = "";
 
     public TestimonialConstructorJB(){
     }
 
-    public TestimonialConstructorJB(String name, int classOf, String text){
+    public TestimonialConstructorJB(String name, String classOf, String text){
         this.name = name;
         this.classOf = classOf;
         this.text = text;
@@ -18,11 +18,9 @@ public class TestimonialConstructorJB implements Serializable{
 
     @Override
     public String toString() {
-        return "TestimonialConstructorJB{" +
-                "name='" + name + '\'' +
-                ", classOf=" + classOf +
-                ", text='" + text + '\'' +
-                '}';
+        return text +
+                "\n             -" + name + " " + classOf + "\n";
+
     }
 
     public String getName() {
@@ -33,11 +31,11 @@ public class TestimonialConstructorJB implements Serializable{
         this.name = name;
     }
 
-    public int getClassOf() {
+    public String getClassOf() {
         return classOf;
     }
 
-    public void setClassOf(int classOf) {
+    public void setClassOf(String classOf) {
         this.classOf = classOf;
     }
 

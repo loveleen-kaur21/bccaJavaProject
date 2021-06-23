@@ -17,10 +17,8 @@ public class TipConstructorJB implements Serializable{
 
     @Override
     public String toString() {
-        return "TipConstructorJB{" +
-                "title='" + title + '\'' +
-                ", body='" + body + '\'' +
-                '}';
+        return  title +
+                "\n             - " + body +"\n";
     }
 
     public String getTitle() {

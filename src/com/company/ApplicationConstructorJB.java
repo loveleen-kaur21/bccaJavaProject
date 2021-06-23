@@ -55,27 +55,25 @@ public class ApplicationConstructorJB implements Serializable {
 
     @Override
     public String toString() {
-        return "ApplicationConstructorJB{" +
-                "name='" + name + '\'' +
-                ", school='" + school + '\'' +
-                ", email='" + email + '\'' +
-                ", gender='" + gender + '\'' +
-                ", race='" + race + '\'' +
-                ", ethnicity='" + ethnicity + '\'' +
-                ", commute='" + commute + '\'' +
-                ", graduationDate='" + graduationDate + '\'' +
-                "', age=" + age +
-                ", phnumber='" + phnumber + '\'' +
-                ", parentName='" + parentName + '\'' +
-                ", parentEmail='" + parentEmail + '\'' +
-                ", parentNumber='" + parentNumber + '\'' +
-                ", plan='" + plan + '\'' +
-                ", aptitude='" + aptitude + '\'' +
-                ", dedication='" + dedication + '\'' +
-                ", passion='" + passion + '\'' +
-                ", persistence='" + persistence + '\'' +
-                ", status='" + status + '\'' +
-                '}';
+        return "Name: '" + name + "'" +'\n' +
+                "School: '" + school + "'"+ '\n' +
+                "Email: '" + email + "'" + '\n' +
+                "Gender: '" + gender + "'" + '\n' +
+                "Race: '" + race + "'" + '\n' +
+                "Ethnicity: '" + ethnicity + "'" + '\n' +
+                "Commute: '" + commute + "'" + '\n' +
+                "Graduation Date: '" + graduationDate + "'" + '\n' +
+                "Age: " + age + "'" + '\n' +
+                "Phone Number: '" + phnumber + "'" + '\n' +
+                "Parent Name: '" + parentName + "'" + '\n' +
+                "Parent Email: '" + parentEmail + "'" + '\n' +
+                "Parent Number: '" + parentNumber + "'" + '\n' +
+                "Plan: '" + plan + "'" + '\n' +
+                "Aptitude: '" + aptitude + "'" + '\n' +
+                "Dedication: '" + dedication + "'" + '\n' +
+                "Passion: '" + passion + "'" + '\n' +
+                "Persistence: '" + persistence + "'" + '\n' +
+                "Status: '" + status + "'" + '\'';
     }
 
     public String getName() {

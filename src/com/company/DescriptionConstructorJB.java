@@ -19,12 +19,11 @@ public class DescriptionConstructorJB implements Serializable{
 
     @Override
     public String toString() {
-        return "DescriptionConstructorJB{" +
-                "language='" + language + '\'' +
-                ", duration='" + duration + '\'' +
-                ", description='" + description + '\'' +
-                ", objective='" + objective + '\'' +
-                '}';
+        return
+                "\nLanguage: " + language +
+                "\nDuration: " + duration +
+                "\nDescription: " + description +
+                "\nObjective: " + objective + '\n';
     }
 
     public String getLanguage() {
